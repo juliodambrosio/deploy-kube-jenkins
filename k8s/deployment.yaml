@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: conv-temp
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: conv-temp
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: conv-temp
+    spec:
+      containers:
+      - name: conv-temp
+        image: juliodambrosio/conv-temp:{{tag}}
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "0.5"
+        ports:
+        - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: conv-temp
+spec:
+  selector:
+    app: conv-temp
+  ports:
+  - port: 8080
+    targetPort: 8080
+    nodePort: 32418
+  type: NodePort

@@ -1,0 +1,15 @@
+Vagrant.configure("2") do |config|
+  # Definir a imagem base para todas as VMs
+  config.vm.box = "ubuntu/focal64"
+
+  # Configuração do Control Plane
+  config.vm.define "jenkins" do |cp|
+    cp.vm.hostname = "jenkins"
+    cp.vm.provider "virtualbox" do |v|
+      v.memory = 2048
+      v.cpus = 2
+    end
+    cp.vm.network "private_network", type: "dhcp"
+   end
+  end
+
